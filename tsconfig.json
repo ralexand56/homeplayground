@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "lib": [
+            "esnext",
+            "dom",
+            "dom.iterable"
+        ],
+        "allowJs": true,
+        "allowSyntheticDefaultImports": true,
+        "emitDecoratorMetadata": false,
+        "esModuleInterop": true,
+        "experimentalDecorators": false,
+        "isolatedModules": true,
+        "jsx": "preserve",
+        "noEmit": true,
+        "skipLibCheck": true,
+        "strict": true
+    }
+}
