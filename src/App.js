@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Login from './Login';
 
 const Aside = styled.ul`
   grid-area: aside;
@@ -9,33 +10,46 @@ const Aside = styled.ul`
   background: rgba(255, 255, 255, 0.5);
   display: none;
 
-   @media screen and (min-width: 768px) {
-     display: block;
-   }
+  @media screen and (min-width: 768px) {
+    display: block;
+  }
 `;
 
 const Header = styled.header`
   background: lightblue;
   grid-area: header;
   padding: 10px;
+  margin: ${props => (props.isOn ? '5px' : '0')};
+  transition: all 0.5s ease;
 `;
 
 const Section1 = styled.section`
   grid-area: sect1;
-  background: #3e6b79;
   padding: 10px;
+  background-color: red;
+  background-image: url('/img/vogue.jpg');
+  background-size: cover;
+  background-blend-mode: difference;
 `;
 
 const Section2 = styled.section`
   grid-area: sect2;
-  background: #4e8092;
   padding: 10px;
+
+  background-color: white;
+  background-image: url('/img/vogue.jpg');
+  background-size: cover;
+  background-blend-mode: multiply;
 `;
 
 const Section3 = styled.section`
   grid-area: sect3;
-  background: #94bfca;
   padding: 10px;
+
+  background-color: #4e8092;
+  background-image: url('/img/vogue.jpg');
+  background-size: cover;
+  background-blend-mode: multiply;
 `;
 
 const Footer = styled.footer`
@@ -62,32 +76,52 @@ const MenuItem = styled.li`
   }
 `;
 
-const App = ({ className }) => (
-  <div className={className}>
-    <Aside>
-      <MenuItem>Home</MenuItem>
-      <MenuItem>
-        <a href="/IRS_Informagic_Home_React/">Informagic</a>
-      </MenuItem>
-    </Aside>
-    <Header>Header</Header>
-    <Section1>Section 1</Section1>
-    <Section2>Section 2</Section2>
-    <Section3>Section 3</Section3>
-    <Footer>Footer</Footer>
-  </div>
-);
+export default class App extends React.Component {
+  state = { isOn: false };
 
-export default styled(App)`
+  constructor(props) {
+    super(props);
+
+    this.state = { isOn: false };
+  }
+
+  handleClick = () => this.setState(prevState => ({ isOn: !prevState.isOn }));
+
+  render() {
+    return (
+      <MainContainer isOn={this.state.isOn}>
+        <Aside>
+          <MenuItem>
+            <button onClick={() => this.handleClick()}>Switch</button>
+          </MenuItem>
+          <MenuItem>Home</MenuItem>
+          {this.state.isOn && <MenuItem>On</MenuItem>}
+          <MenuItem>
+            <a href="/IRS_Informagic_Home_React/">Informagic</a>
+          </MenuItem>
+        </Aside>
+        <Header isOn={this.state.isOn}>Header</Header>
+        <Section1>Section 1</Section1>
+        <Section2>Section 2</Section2>
+            <Section3>Section 3</Section3>
+            <Login name="Nina simone" />
+        <Footer>Footer</Footer>
+      </MainContainer>
+    );
+  }
+}
+
+const MainContainer = styled.div`
   color: white;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: auto repeat(3, 1fr) auto;
+  grid-template-rows: auto repeat(3, 1fr) auto auto;
   grid-template-areas:
     'header'
     'sect1'
     'sect2'
     'sect3'
+    'Login'
     'footer';
   font-size: 1.2rem;
   background: linear-gradient(#077391, #69b4c9);
@@ -95,10 +129,19 @@ export default styled(App)`
 
   @media screen and (min-width: 768px) {
     grid-template-columns: 200px 1fr 1fr 1fr;
-    grid-template-rows: auto 1fr auto;
-    grid-template-areas:
-      'aside header header header'
-      'aside sect1 sect2 sect3'
-      'aside footer footer footer';
+    grid-template-rows: auto 1fr auto auto;
+    grid-template-areas: ${props =>
+      props.isOn
+        ? [
+            '"aside header header header"',
+            '"aside sect1 sect2 sect3"',
+            '"aside footer footer footer"'
+          ].join(' ')
+        : [
+            '"aside header header header "',
+            '"aside sect1 sect2 sect3"',
+            '"aside Login Login Login"',
+            '"aside footer footer footer"'
+          ].join(' ')};
   }
 `;
